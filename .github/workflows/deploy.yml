@@ -52,14 +52,14 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_ed25519 \
             "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}" \
-            "mkdir -p /var/www/mysite/cae /var/www/mysite/user/data"
+            "mkdir -p /var/www/mysite/user/themes/cae-theme/dist /var/www/mysite/user/data"
 
       - name: Deploy dist/ via rsync
         run: |
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/id_ed25519" \
             dist/ \
-            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/cae/"
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/user/themes/cae-theme/dist/"
 
       - name: Copy caeSystems.json
         run: |
