@@ -100,5 +100,47 @@
     "name": "RecurDyn",
     "newsUrl": "https://functionbay.com/en/page/list/4/news",
     "selector": "li"
+  },
+  {
+    "id": "openradioss",
+    "name": "OpenRadioss",
+    "newsUrl": "https://github.com/OpenRadioss/OpenRadioss/releases",
+    "selector": "section[data-testid='release']"
+  },
+  {
+    "id": "frontistr",
+    "name": "FrontISTR",
+    "newsUrl": "https://github.com/FrontISTR/FrontISTR/releases",
+    "selector": "section[data-testid='release']"
+  },
+  {
+    "id": "elmer",
+    "name": "Elmer",
+    "newsUrl": "https://github.com/ElmerCSC/elmerfem/releases",
+    "selector": "section[data-testid='release']"
+  },
+  {
+    "id": "prepomax",
+    "name": "PrePoMax",
+    "newsUrl": "https://prepomax.fs.um.si/news/",
+    "selector": "article"
+  },
+  {
+    "id": "gmsh",
+    "name": "Gmsh",
+    "newsUrl": "https://gmsh.info",
+    "selector": "p"
+  },
+  {
+    "id": "salome-meca",
+    "name": "Salome-Meca",
+    "newsUrl": "https://www.salome-platform.org",
+    "selector": "article"
+  },
+  {
+    "id": "mbdyn",
+    "name": "MBDyn",
+    "newsUrl": "https://www.mbdyn.org/Download.html",
+    "selector": "p"
   }
 ]
