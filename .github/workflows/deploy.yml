@@ -1,0 +1,53 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SAKURA_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.SAKURA_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Create remote directories
+        run: |
+          ssh -i ~/.ssh/id_ed25519 \
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}" \
+            "mkdir -p /var/www/mysite/user/themes/cae-theme/dist /var/www/mysite/user/data"
+
+      - name: Deploy dist/ via rsync
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/id_ed25519" \
+            dist/ \
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/user/themes/cae-theme/dist/"
+
+      - name: Copy caeSystems.json
+        run: |
+          rsync -avz \
+            -e "ssh -i ~/.ssh/id_ed25519" \
+            src/data/caeSystems.json \
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/user/data/cae_systems.json"
