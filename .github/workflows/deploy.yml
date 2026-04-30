@@ -67,3 +67,10 @@ jobs:
             -e "ssh -i ~/.ssh/id_ed25519" \
             src/data/caeSystems.json \
             "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/user/data/cae_systems.json"
+
+      - name: Deploy fetch script
+        run: |
+          rsync -avz \
+            -e "ssh -i ~/.ssh/id_ed25519" \
+            scripts/fetch_cae_news.py \
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/home/${{ secrets.SAKURA_USER }}/scripts/fetch_cae_news.py"

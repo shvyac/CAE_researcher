@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
@@ -12,9 +12,7 @@ import { LicenseBadge } from './StatusBadge'
 import { SearchBar } from './SearchBar'
 import { DomainFilter } from './DomainFilter'
 import { useCAEFilter } from '../hooks/useCAEFilter'
-import rawData from '../data/caeSystems.json'
-
-const data = rawData as CAESystem[]
+import bundledData from '../data/caeSystems.json'
 
 // Domain chip colors used inside table rows
 const DOMAIN_ROW_STYLES: Record<string, string> = {
@@ -123,7 +121,16 @@ const columns = [
 ]
 
 export function CAETable() {
+  const [data, setData] = useState<CAESystem[]>(bundledData as CAESystem[])
   const [sorting, setSorting] = useState<SortingState>([])
+
+  useEffect(() => {
+    fetch('/user/data/cae_systems.json')
+      .then((r) => r.json())
+      .then((d: CAESystem[]) => setData(d))
+      .catch(() => {/* keep bundled data */})
+  }, [])
+
   const { filtered, searchQuery, setSearchQuery, activeChips, toggleChip } =
     useCAEFilter(data)
 
