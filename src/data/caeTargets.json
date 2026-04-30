@@ -92,14 +92,14 @@
   {
     "id": "openmodelica",
     "name": "OpenModelica",
-    "newsUrl": "https://openmodelica.org/home/news/",
-    "selector": "article"
+    "newsUrl": "https://openmodelica.org/tags/news/index.xml",
+    "rss": true
   },
   {
     "id": "recurdyn",
     "name": "RecurDyn",
-    "newsUrl": "https://functionbay.com/en/page/list/4/news",
-    "selector": "li"
+    "newsUrl": "https://functionbay.com/en/news",
+    "selector": ".news-item, article, li"
   },
   {
     "id": "openradioss",
