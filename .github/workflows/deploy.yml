@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -28,9 +31,19 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SAKURA_SSH_KEY }}" > ~/.ssh/id_ed25519
+          # Strip Windows-style \r in case the secret was pasted with CRLF
+          printf '%s' "${{ secrets.SAKURA_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_ed25519
+          echo "" >> ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H "${{ secrets.SAKURA_HOST }}" >> ~/.ssh/known_hosts
+          # Fetch all host key types (rsa, ecdsa, ed25519)
+          ssh-keyscan -t rsa,ecdsa,ed25519 -H "${{ secrets.SAKURA_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Test SSH connection
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -o BatchMode=yes \
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}" \
+            "echo '✓ SSH OK'"
 
       - name: Create remote directories
         run: |
