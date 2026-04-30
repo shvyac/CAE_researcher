@@ -98,8 +98,8 @@
   {
     "id": "recurdyn",
     "name": "RecurDyn",
-    "newsUrl": "https://functionbay.com/en/news",
-    "selector": ".news-item, article, li"
+    "newsUrl": "https://functionbay.com/en/blog",
+    "selector": "article"
   },
   {
     "id": "openradioss",
