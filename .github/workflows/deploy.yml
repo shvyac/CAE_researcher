@@ -31,19 +31,22 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          # Strip Windows-style \r in case the secret was pasted with CRLF
-          printf '%s' "${{ secrets.SAKURA_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_ed25519
-          echo "" >> ~/.ssh/id_ed25519
+          # Write key — echo preserves newlines in GitHub Actions secrets
+          echo "${{ secrets.SAKURA_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          # Fetch all host key types (rsa, ecdsa, ed25519)
+          # Verify key header is intact
+          head -1 ~/.ssh/id_ed25519
+          # Fetch all host key types
           ssh-keyscan -t rsa,ecdsa,ed25519 -H "${{ secrets.SAKURA_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
-          chmod 600 ~/.ssh/known_hosts
+          echo "known_hosts lines: $(wc -l < ~/.ssh/known_hosts)"
 
-      - name: Test SSH connection
+      - name: Test SSH connection (verbose)
         run: |
-          ssh -i ~/.ssh/id_ed25519 -o BatchMode=yes \
+          ssh -v -i ~/.ssh/id_ed25519 \
+            -o BatchMode=yes \
+            -o ConnectTimeout=15 \
             "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}" \
-            "echo '✓ SSH OK'"
+            "echo SSH OK"
 
       - name: Create remote directories
         run: |
