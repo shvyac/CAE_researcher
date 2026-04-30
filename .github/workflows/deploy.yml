@@ -74,3 +74,11 @@ jobs:
             -e "ssh -i ~/.ssh/id_ed25519" \
             scripts/fetch_cae_news.py \
             "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/home/${{ secrets.SAKURA_USER }}/scripts/fetch_cae_news.py"
+
+      - name: Sync source data to server repo
+        run: |
+          rsync -avz \
+            -e "ssh -i ~/.ssh/id_ed25519" \
+            src/data/caeSystems.json \
+            src/data/caeTargets.json \
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/home/${{ secrets.SAKURA_USER }}/CAE_researcher/src/data/"
