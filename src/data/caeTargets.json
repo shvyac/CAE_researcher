@@ -2,13 +2,67 @@
   {
     "id": "ls-dyna",
     "name": "LS-DYNA",
-    "newsUrl": "https://www.ansys.com/products/structures/ansys-ls-dyna",
-    "selector": ".news-item"
+    "newsUrl": "https://lsdyna.ansys.com/news/",
+    "selector": "table tr"
   },
   {
     "id": "radioss",
     "name": "Radioss",
     "newsUrl": "https://altair.com/newsroom/",
+    "selector": ".news-card"
+  },
+  {
+    "id": "pam-crash",
+    "name": "PAM-CRASH",
+    "newsUrl": "https://www.keysight.com/cae/news",
+    "selector": "article"
+  },
+  {
+    "id": "nastran",
+    "name": "MSC Nastran",
+    "newsUrl": "https://nexus.hexagon.com/community/public/msc-nastran/b/msc-nastran-news",
+    "selector": ".multiple-column-item"
+  },
+  {
+    "id": "abaqus",
+    "name": "Abaqus",
+    "newsUrl": "https://www.3ds.com/newsroom",
+    "selector": ".news-item"
+  },
+  {
+    "id": "actran",
+    "name": "Actran",
+    "newsUrl": "https://nexus.hexagon.com/community/public/actran/b/actran-news",
+    "selector": ".multiple-column-item"
+  },
+  {
+    "id": "adams",
+    "name": "Adams",
+    "newsUrl": "https://nexus.hexagon.com/community/public/adams/b/adams-news",
+    "selector": ".multiple-column-item"
+  },
+  {
+    "id": "carsim",
+    "name": "CarSim",
+    "newsUrl": "https://www.carsim.com/news/index.php",
+    "selector": ".news-entry"
+  },
+  {
+    "id": "simpack",
+    "name": "Simpack",
+    "newsUrl": "https://blog.3ds.com/brands/simulia/",
+    "selector": "article.post"
+  },
+  {
+    "id": "fe-safe",
+    "name": "fe-safe",
+    "newsUrl": "https://blog.3ds.com/brands/simulia/tag/fe-safe/",
+    "selector": "article.post"
+  },
+  {
+    "id": "ncode-designlife",
+    "name": "nCode DesignLife",
+    "newsUrl": "https://www.hbkworld.com/en/about/news",
     "selector": ".news-card"
   },
   {
@@ -18,33 +72,33 @@
     "selector": "article"
   },
   {
-    "id": "adams",
-    "name": "Adams",
-    "newsUrl": "https://hexagon.com/company/newsroom",
-    "selector": ".press-release"
-  },
-  {
-    "id": "abaqus",
-    "name": "Abaqus",
-    "newsUrl": "https://www.3ds.com/newsroom",
-    "selector": ".news-item"
-  },
-  {
-    "id": "carsim",
-    "name": "CarSim",
-    "newsUrl": "https://www.carsim.com/news/index.php",
-    "selector": ".news-entry"
-  },
-  {
     "id": "calculix",
     "name": "CalculiX",
     "newsUrl": "http://www.calculix.de",
     "selector": "p"
   },
   {
+    "id": "code-aster",
+    "name": "Code_Aster",
+    "newsUrl": "https://code-aster.org/spip.php?rubrique2",
+    "selector": "#contenu ul li"
+  },
+  {
     "id": "su2",
     "name": "SU2",
-    "newsUrl": "https://su2code.github.io/blog/",
+    "newsUrl": "https://github.com/su2code/SU2/releases",
+    "selector": "section[data-testid='release']"
+  },
+  {
+    "id": "openmodelica",
+    "name": "OpenModelica",
+    "newsUrl": "https://openmodelica.org/home/news/",
     "selector": "article"
+  },
+  {
+    "id": "recurdyn",
+    "name": "RecurDyn",
+    "newsUrl": "https://functionbay.com/en/page/list/4/news",
+    "selector": "li"
   }
 ]
