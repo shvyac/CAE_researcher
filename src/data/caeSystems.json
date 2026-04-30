@@ -238,5 +238,21 @@
     "releaseDate": "2024-03-01",
     "description": "Open-source multiphysics simulation suite for CFD, shape optimization, and aerodynamic analysis.",
     "fetchStatus": "Unknown"
+  },
+  {
+    "id": "openmodelica",
+    "name": "OpenModelica",
+    "vendor": "Open Source Modelica Consortium (OSMC)",
+    "vendorUrl": "https://openmodelica.org",
+    "domain": ["Multibody", "Handling", "Ride", "General"],
+    "solverType": "MBD",
+    "licenseType": "Open Source",
+    "os": ["Windows", "Linux", "macOS"],
+    "hpcSupported": false,
+    "gpuSupported": false,
+    "version": "1.24.0",
+    "releaseDate": "2024-10-09",
+    "description": "Open-source Modelica-based modeling and simulation environment for complex multi-domain physical systems, developed by Linköping University and OSMC.",
+    "fetchStatus": "Unknown"
   }
 ]
