@@ -96,12 +96,6 @@
     "rss": true
   },
   {
-    "id": "recurdyn",
-    "name": "RecurDyn",
-    "newsUrl": "https://functionbay.com/en/blog",
-    "selector": "article"
-  },
-  {
     "id": "openradioss",
     "name": "OpenRadioss",
     "newsUrl": "https://github.com/OpenRadioss/OpenRadioss/releases",
