@@ -254,5 +254,21 @@
     "releaseDate": "2024-10-09",
     "description": "Open-source Modelica-based modeling and simulation environment for complex multi-domain physical systems, developed by Linköping University and OSMC.",
     "fetchStatus": "Unknown"
+  },
+  {
+    "id": "recurdyn",
+    "name": "RecurDyn",
+    "vendor": "FunctionBay",
+    "vendorUrl": "https://functionbay.com/en/page/single/2/recurdyn-overview",
+    "domain": ["Multibody", "Handling", "Ride", "Durability"],
+    "solverType": "MBD",
+    "licenseType": "Commercial",
+    "os": ["Windows"],
+    "hpcSupported": false,
+    "gpuSupported": false,
+    "version": "2024",
+    "releaseDate": "2024-01-01",
+    "description": "Multi-body dynamics solver combining rigid and flexible body simulation with integrated FE technology, developed by FunctionBay (South Korea).",
+    "fetchStatus": "Unknown"
   }
 ]
