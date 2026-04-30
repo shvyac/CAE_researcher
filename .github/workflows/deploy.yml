@@ -61,9 +61,9 @@ jobs:
             dist/ \
             "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/user/themes/cae-theme/dist/"
 
-      - name: Copy caeSystems.json
+      - name: Copy caeSystems.json (bootstrap only – never overwrite cron-enriched data)
         run: |
-          rsync -avz \
+          rsync -avz --ignore-existing \
             -e "ssh -i ~/.ssh/id_ed25519" \
             src/data/caeSystems.json \
             "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/user/data/cae_systems.json"
