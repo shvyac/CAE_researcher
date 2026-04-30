@@ -10,7 +10,9 @@ Cron:   0 6 * * 1 /home/shvyac/scripts/venv/bin/python /home/shvyac/scripts/fetc
 import json
 import re
 import logging
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import urlparse, urljoin
 
@@ -40,7 +42,59 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 
-def fetch_news(target: dict) -> tuple[list[dict], str]:
+def format_date(raw: str) -> str:
+    """Parse RFC 2822 or ISO date and return YYYY-MM-DD."""
+    try:
+        dt = parsedate_to_datetime(raw)
+        return dt.strftime("%Y-%m-%d")
+    except Exception:
+        pass
+    try:
+        return raw[:10]
+    except Exception:
+        return raw
+
+
+def fetch_rss(target: dict) -> tuple[list[dict], str]:
+    url = target["newsUrl"]
+    try:
+        resp = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
+        resp.raise_for_status()
+    except Exception as exc:
+        log.warning(f"  x {target['name']}: {exc}")
+        return [], "Unknown"
+
+    try:
+        root = ET.fromstring(resp.content)
+    except ET.ParseError as exc:
+        log.warning(f"  x {target['name']}: XML parse error: {exc}")
+        return [], "Unknown"
+
+    ns = {"atom": "http://www.w3.org/2005/Atom"}
+    items: list[dict] = []
+
+    for item in root.iter("item"):
+        title = (item.findtext("title") or "").strip()
+        link = (item.findtext("link") or "").strip()
+        pub = (item.findtext("pubDate") or "").strip()
+
+        if not title or not link:
+            continue
+
+        entry: dict = {"title": title[:200], "url": link}
+        if pub:
+            entry["date"] = format_date(pub)
+
+        items.append(entry)
+        if len(items) >= MAX_ITEMS:
+            break
+
+    status = "Updated" if items else "No update"
+    log.info(f"  {'ok' if items else '-'} {target['name']}: {len(items)} items (RSS)")
+    return items, status
+
+
+def fetch_html(target: dict) -> tuple[list[dict], str]:
     url = target["newsUrl"]
     selector = target.get("selector", "article")
     parsed = urlparse(url)
@@ -85,6 +139,12 @@ def fetch_news(target: dict) -> tuple[list[dict], str]:
     status = "Updated" if items else "No update"
     log.info(f"  {'ok' if items else '-'} {target['name']}: {len(items)} items")
     return items, status
+
+
+def fetch_news(target: dict) -> tuple[list[dict], str]:
+    if target.get("rss"):
+        return fetch_rss(target)
+    return fetch_html(target)
 
 
 def main() -> None:

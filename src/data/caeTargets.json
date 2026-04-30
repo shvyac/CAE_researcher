@@ -14,8 +14,8 @@
   {
     "id": "pam-crash",
     "name": "PAM-CRASH",
-    "newsUrl": "https://www.keysight.com/cae/news",
-    "selector": "article"
+    "newsUrl": "https://www.3ds.com/contents/feed/content/article_press_release",
+    "rss": true
   },
   {
     "id": "nastran",
@@ -26,8 +26,8 @@
   {
     "id": "abaqus",
     "name": "Abaqus",
-    "newsUrl": "https://www.3ds.com/newsroom",
-    "selector": ".news-item"
+    "newsUrl": "https://blog.3ds.com/brands/simulia/feed.xml",
+    "rss": true
   },
   {
     "id": "actran",
@@ -50,14 +50,14 @@
   {
     "id": "simpack",
     "name": "Simpack",
-    "newsUrl": "https://blog.3ds.com/brands/simulia/",
-    "selector": "article.post"
+    "newsUrl": "https://blog.3ds.com/brands/simulia/feed.xml",
+    "rss": true
   },
   {
     "id": "fe-safe",
     "name": "fe-safe",
-    "newsUrl": "https://blog.3ds.com/brands/simulia/tag/fe-safe/",
-    "selector": "article.post"
+    "newsUrl": "https://blog.3ds.com/brands/simulia/feed.xml",
+    "rss": true
   },
   {
     "id": "ncode-designlife",
