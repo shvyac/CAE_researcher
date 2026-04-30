@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ls-dyna",
+    "name": "LS-DYNA",
+    "newsUrl": "https://www.ansys.com/products/structures/ansys-ls-dyna",
+    "selector": ".news-item"
+  },
+  {
+    "id": "radioss",
+    "name": "Radioss",
+    "newsUrl": "https://altair.com/newsroom/",
+    "selector": ".news-card"
+  },
+  {
+    "id": "openfoam",
+    "name": "OpenFOAM",
+    "newsUrl": "https://www.openfoam.com/news",
+    "selector": "article"
+  },
+  {
+    "id": "adams",
+    "name": "Adams",
+    "newsUrl": "https://hexagon.com/company/newsroom",
+    "selector": ".press-release"
+  },
+  {
+    "id": "abaqus",
+    "name": "Abaqus",
+    "newsUrl": "https://www.3ds.com/newsroom",
+    "selector": ".news-item"
+  },
+  {
+    "id": "carsim",
+    "name": "CarSim",
+    "newsUrl": "https://www.carsim.com/news/index.php",
+    "selector": ".news-entry"
+  },
+  {
+    "id": "calculix",
+    "name": "CalculiX",
+    "newsUrl": "http://www.calculix.de",
+    "selector": "p"
+  },
+  {
+    "id": "su2",
+    "name": "SU2",
+    "newsUrl": "https://su2code.github.io/blog/",
+    "selector": "article"
+  }
+]
