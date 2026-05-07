@@ -52,7 +52,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_ed25519 \
             "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}" \
-            "mkdir -p /var/www/mysite/user/themes/cae-theme/dist /var/www/mysite/user/data"
+            "mkdir -p /var/www/mysite/cae"
 
       - name: Deploy dist/ via rsync
         run: |
@@ -60,14 +60,14 @@ jobs:
             --exclude='cae_systems.json' \
             -e "ssh -i ~/.ssh/id_ed25519" \
             dist/ \
-            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/user/themes/cae-theme/dist/"
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/cae/"
 
-      - name: Bootstrap cae_systems.json in theme dist (first deploy only – never overwrite cron-enriched data)
+      - name: Bootstrap cae_systems.json (first deploy only – never overwrite cron-enriched data)
         run: |
           rsync -avz --ignore-existing \
             -e "ssh -i ~/.ssh/id_ed25519" \
             src/data/caeSystems.json \
-            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/user/themes/cae-theme/dist/cae_systems.json"
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/cae/cae_systems.json"
 
       - name: Deploy fetch script
         run: |
