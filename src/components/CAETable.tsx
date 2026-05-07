@@ -159,7 +159,7 @@ export function CAETable() {
   const [sorting, setSorting] = useState<SortingState>([])
 
   useEffect(() => {
-    fetch('/user/themes/cae-theme/dist/cae_systems.json')
+    fetch('./cae_systems.json')
       .then((r) => r.json())
       .then((d: CAESystem[]) => setData(d))
       .catch(() => {/* keep bundled data */})
