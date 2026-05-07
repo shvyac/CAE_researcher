@@ -23,7 +23,7 @@ HOME = Path.home()
 REPO_DATA = HOME / "CAE_researcher/src/data"
 TARGETS_JSON = REPO_DATA / "caeTargets.json"
 SOURCE_JSON = REPO_DATA / "caeSystems.json"
-DEPLOYED_JSON = Path("/var/www/mysite/user/data/cae_systems.json")
+DEPLOYED_JSON = Path("/var/www/mysite/user/themes/cae-theme/dist/cae_systems.json")
 
 HEADERS = {
     "User-Agent": (
