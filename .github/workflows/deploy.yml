@@ -57,16 +57,17 @@ jobs:
       - name: Deploy dist/ via rsync
         run: |
           rsync -avz --delete \
+            --exclude='cae_systems.json' \
             -e "ssh -i ~/.ssh/id_ed25519" \
             dist/ \
             "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/user/themes/cae-theme/dist/"
 
-      - name: Copy caeSystems.json (bootstrap only – never overwrite cron-enriched data)
+      - name: Bootstrap cae_systems.json in theme dist (first deploy only – never overwrite cron-enriched data)
         run: |
           rsync -avz --ignore-existing \
             -e "ssh -i ~/.ssh/id_ed25519" \
             src/data/caeSystems.json \
-            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/user/data/cae_systems.json"
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/user/themes/cae-theme/dist/cae_systems.json"
 
       - name: Deploy fetch script
         run: |
