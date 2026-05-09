@@ -3,11 +3,12 @@
 fetch_cae_news.py — weekly CAE news fetcher
 Reads   ~/CAE_researcher/src/data/caeTargets.json
 Reads   ~/CAE_researcher/src/data/caeSystems.json
-Writes  /var/www/mysite/user/data/cae_systems.json
-Cron:   0 6 * * 1 /home/shvyac/scripts/venv/bin/python /home/shvyac/scripts/fetch_cae_news.py >> /home/shvyac/scripts/cae_news.log 2>&1
+Writes  path set by DEPLOYED_JSON env var (default: ~/cae_systems.json)
+Cron:   0 6 * * 1 /path/to/venv/bin/python /path/to/fetch_cae_news.py >> /path/to/cae_news.log 2>&1
 """
 
 import json
+import os
 import re
 import logging
 import xml.etree.ElementTree as ET
@@ -23,7 +24,7 @@ HOME = Path.home()
 REPO_DATA = HOME / "CAE_researcher/src/data"
 TARGETS_JSON = REPO_DATA / "caeTargets.json"
 SOURCE_JSON = REPO_DATA / "caeSystems.json"
-DEPLOYED_JSON = Path("/var/www/mysite/cae/cae_systems.json")
+DEPLOYED_JSON = Path(os.environ.get("DEPLOYED_JSON", str(Path.home() / "cae_systems.json")))
 
 HEADERS = {
     "User-Agent": (
