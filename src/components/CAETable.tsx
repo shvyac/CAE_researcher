@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
@@ -27,44 +27,31 @@ const DOMAIN_ROW_STYLES: Record<string, string> = {
   General: 'bg-gray-100 text-gray-600 border-gray-200',
 }
 
-function NameCell({ system }: { system: CAESystem }) {
-  const [expanded, setExpanded] = useState(false)
+function NameCell({
+  system,
+  onViewNews,
+}: {
+  system: CAESystem
+  onViewNews: (system: CAESystem) => void
+}) {
   const news = system.latestNews ?? []
   return (
-    <div>
-      <div className="flex items-center gap-2 flex-wrap">
-        <a
-          href={system.vendorUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-semibold text-blue-600 hover:text-blue-800 hover:underline whitespace-nowrap"
+    <div className="flex items-center gap-2 flex-wrap">
+      <a
+        href={system.vendorUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-semibold text-blue-600 hover:text-blue-800 hover:underline whitespace-nowrap"
+      >
+        {system.name}
+      </a>
+      {news.length > 0 && (
+        <button
+          onClick={() => onViewNews(system)}
+          className="text-xs bg-blue-50 text-blue-600 border border-blue-200 px-1.5 py-0.5 rounded-full hover:bg-blue-100 whitespace-nowrap cursor-pointer"
         >
-          {system.name}
-        </a>
-        {news.length > 0 && (
-          <button
-            onClick={() => setExpanded((v) => !v)}
-            className="text-xs bg-blue-50 text-blue-600 border border-blue-200 px-1.5 py-0.5 rounded-full hover:bg-blue-100 whitespace-nowrap cursor-pointer"
-          >
-            {news.length} news {expanded ? '▲' : '▼'}
-          </button>
-        )}
-      </div>
-      {expanded && (
-        <ul className="mt-1.5 space-y-1">
-          {news.map((item, i) => (
-            <li key={i}>
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-gray-500 hover:text-blue-600 hover:underline line-clamp-1"
-              >
-                {item.title}
-              </a>
-            </li>
-          ))}
-        </ul>
+          {news.length} news →
+        </button>
       )}
     </div>
   )
@@ -72,10 +59,11 @@ function NameCell({ system }: { system: CAESystem }) {
 
 const columnHelper = createColumnHelper<CAESystem>()
 
-const columns = [
+function buildColumns(onViewNews: (system: CAESystem) => void) {
+  return [
   columnHelper.accessor('name', {
     header: 'Name',
-    cell: (info) => <NameCell system={info.row.original} />,
+    cell: (info) => <NameCell system={info.row.original} onViewNews={onViewNews} />,
   }),
   columnHelper.accessor('vendor', {
     header: 'Vendor',
@@ -152,9 +140,9 @@ const columns = [
       </span>
     ),
   }),
-]
+]}
 
-export function CAETable() {
+export function CAETable({ onViewNews }: { onViewNews: (system: CAESystem) => void }) {
   const [data, setData] = useState<CAESystem[]>(bundledData as CAESystem[])
   const [sorting, setSorting] = useState<SortingState>([])
 
@@ -167,6 +155,8 @@ export function CAETable() {
 
   const { filtered, searchQuery, setSearchQuery, activeChips, toggleChip } =
     useCAEFilter(data)
+
+  const columns = useMemo(() => buildColumns(onViewNews), [onViewNews])
 
   const table = useReactTable({
     data: filtered,
