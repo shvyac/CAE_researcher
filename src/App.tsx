@@ -1,6 +1,11 @@
+import { useState } from 'react'
 import { CAETable } from './components/CAETable'
+import { NewsPage } from './components/NewsPage'
+import type { CAESystem } from './types/cae'
 
 function App() {
+  const [newsTarget, setNewsTarget] = useState<CAESystem | null>(null)
+
   return (
     <main className="min-h-screen bg-gray-50">
       <div className="max-w-screen-xl mx-auto px-4 py-8">
@@ -10,7 +15,12 @@ function App() {
             Automotive engineering simulation software directory
           </p>
         </header>
-        <CAETable />
+
+        {newsTarget ? (
+          <NewsPage system={newsTarget} onBack={() => setNewsTarget(null)} />
+        ) : (
+          <CAETable onViewNews={setNewsTarget} />
+        )}
       </div>
     </main>
   )
