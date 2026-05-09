@@ -1,6 +1,6 @@
 // =============================================================================
 // cae.ts — TypeScript type definitions for CAE System List
-// Project: dream.shvtech.com / GRAV CMS
+// Project: CAE System List
 // =============================================================================
 
 // ── Domain categories ────────────────────────────────────────────────────────
