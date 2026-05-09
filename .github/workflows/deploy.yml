@@ -52,7 +52,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_ed25519 \
             "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}" \
-            "mkdir -p /var/www/mysite/cae"
+            "mkdir -p ${{ secrets.DEPLOY_PATH }}"
 
       - name: Deploy dist/ via rsync
         run: |
@@ -60,21 +60,21 @@ jobs:
             --exclude='cae_systems.json' \
             -e "ssh -i ~/.ssh/id_ed25519" \
             dist/ \
-            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/cae/"
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:${{ secrets.DEPLOY_PATH }}/"
 
       - name: Bootstrap cae_systems.json (first deploy only – never overwrite cron-enriched data)
         run: |
           rsync -avz --ignore-existing \
             -e "ssh -i ~/.ssh/id_ed25519" \
             src/data/caeSystems.json \
-            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/var/www/mysite/cae/cae_systems.json"
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:${{ secrets.DEPLOY_PATH }}/cae_systems.json"
 
       - name: Deploy fetch script
         run: |
           rsync -avz \
             -e "ssh -i ~/.ssh/id_ed25519" \
             scripts/fetch_cae_news.py \
-            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/home/${{ secrets.SAKURA_USER }}/scripts/fetch_cae_news.py"
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:${{ secrets.SCRIPTS_PATH }}/fetch_cae_news.py"
 
       - name: Sync source data to server repo
         run: |
@@ -82,4 +82,4 @@ jobs:
             -e "ssh -i ~/.ssh/id_ed25519" \
             src/data/caeSystems.json \
             src/data/caeTargets.json \
-            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:/home/${{ secrets.SAKURA_USER }}/CAE_researcher/src/data/"
+            "${{ secrets.SAKURA_USER }}@${{ secrets.SAKURA_HOST }}:${{ secrets.REPO_DATA_PATH }}/"
