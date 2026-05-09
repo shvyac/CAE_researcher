@@ -5,12 +5,20 @@ Reads   ~/CAE_researcher/src/data/caeTargets.json
 Reads   ~/CAE_researcher/src/data/caeSystems.json
 Writes  path set by DEPLOYED_JSON env var (default: ~/cae_systems.json)
 Cron:   0 6 * * 1 /path/to/venv/bin/python /path/to/fetch_cae_news.py >> /path/to/cae_news.log 2>&1
+
+Hexagon SimCompanion targets (marked "simcompanion": true in caeTargets.json) are
+fetched via the separate fetch_hexagon_simcompanion.py script which requires
+COVEO_ORG_ID and COVEO_TOKEN environment variables.  If those are set here, this
+script will automatically invoke the simcompanion fetcher before processing other
+targets.  Otherwise SimCompanion-only entries are skipped with a warning.
 """
 
 import json
 import os
 import re
 import logging
+import subprocess
+import sys
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
@@ -148,6 +156,32 @@ def fetch_news(target: dict) -> tuple[list[dict], str]:
     return fetch_html(target)
 
 
+def run_simcompanion_fetcher() -> None:
+    """Run fetch_hexagon_simcompanion.py if Coveo credentials are present."""
+    org_id = os.environ.get("COVEO_ORG_ID", "")
+    token = os.environ.get("COVEO_TOKEN", "")
+    if not org_id or not token:
+        log.info(
+            "Skipping SimCompanion fetch (COVEO_ORG_ID / COVEO_TOKEN not set). "
+            "Run fetch_hexagon_simcompanion.py separately to include Hexagon portal news."
+        )
+        return
+
+    script = Path(__file__).parent / "fetch_hexagon_simcompanion.py"
+    if not script.exists():
+        log.warning("fetch_hexagon_simcompanion.py not found at %s", script)
+        return
+
+    log.info("Running SimCompanion fetcher …")
+    result = subprocess.run(
+        [sys.executable, str(script)],
+        env={**os.environ},
+        capture_output=False,
+    )
+    if result.returncode != 0:
+        log.warning("SimCompanion fetcher exited with code %d", result.returncode)
+
+
 def main() -> None:
     targets = {t["id"]: t for t in json.loads(TARGETS_JSON.read_text())}
     systems = json.loads(SOURCE_JSON.read_text())
@@ -155,15 +189,45 @@ def main() -> None:
 
     log.info(f"=== CAE news fetch started {now} ===")
 
+    # Fetch Hexagon SimCompanion news (Coveo API) before processing other targets
+    run_simcompanion_fetcher()
+
+    # Reload systems in case simcompanion fetcher already wrote news for some entries
+    if DEPLOYED_JSON.exists():
+        deployed = {s["id"]: s for s in json.loads(DEPLOYED_JSON.read_text())}
+    else:
+        deployed = {}
+
     for system in systems:
         sid = system["id"]
-        if sid not in targets:
+        target = targets.get(sid)
+        if target is None:
             continue
+
+        # Skip targets that are SimCompanion-only (no newsUrl for HTML/RSS fetch)
+        if target.get("simcompanion") and not target.get("newsUrl"):
+            # News already written by run_simcompanion_fetcher(); copy it over if available
+            if sid in deployed and deployed[sid].get("latestNews"):
+                system["latestNews"] = deployed[sid]["latestNews"]
+                system["lastFetched"] = deployed[sid].get("lastFetched", now)
+                system["fetchStatus"] = deployed[sid].get("fetchStatus", "Updated")
+            else:
+                system.setdefault("fetchStatus", "Pending SimCompanion credentials")
+            continue
+
         log.info(f"Fetching {system['name']} ...")
-        news, status = fetch_news(targets[sid])
-        system["latestNews"] = news
-        system["lastFetched"] = now
-        system["fetchStatus"] = status
+        news, status = fetch_news(target)
+
+        # For SimCompanion-tagged targets with a fallback newsUrl, prefer SimCompanion
+        # news if already fetched; otherwise use the HTML/RSS result
+        if target.get("simcompanion") and sid in deployed and deployed[sid].get("latestNews"):
+            system["latestNews"] = deployed[sid]["latestNews"]
+            system["lastFetched"] = deployed[sid].get("lastFetched", now)
+            system["fetchStatus"] = deployed[sid].get("fetchStatus", "Updated")
+        else:
+            system["latestNews"] = news
+            system["lastFetched"] = now
+            system["fetchStatus"] = status
 
     DEPLOYED_JSON.parent.mkdir(parents=True, exist_ok=True)
     DEPLOYED_JSON.write_text(json.dumps(systems, ensure_ascii=False, indent=2))

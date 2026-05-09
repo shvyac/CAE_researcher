@@ -21,7 +21,9 @@
     "id": "nastran",
     "name": "MSC Nastran",
     "newsUrl": "https://nexus.hexagon.com/community/public/msc-nastran/b/msc-nastran-news",
-    "selector": ".multiple-column-item"
+    "selector": ".multiple-column-item",
+    "simcompanion": true,
+    "simcompanionProduct": "MSC Nastran"
   },
   {
     "id": "abaqus",
@@ -33,13 +35,17 @@
     "id": "actran",
     "name": "Actran",
     "newsUrl": "https://nexus.hexagon.com/community/public/actran/b/actran-news",
-    "selector": ".multiple-column-item"
+    "selector": ".multiple-column-item",
+    "simcompanion": true,
+    "simcompanionProduct": "Actran"
   },
   {
     "id": "adams",
     "name": "Adams",
     "newsUrl": "https://nexus.hexagon.com/community/public/adams/b/adams-news",
-    "selector": ".multiple-column-item"
+    "selector": ".multiple-column-item",
+    "simcompanion": true,
+    "simcompanionProduct": "Adams"
   },
   {
     "id": "carsim",
@@ -136,5 +142,83 @@
     "name": "MBDyn",
     "newsUrl": "https://www.mbdyn.org/Download.html",
     "selector": "p"
+  },
+  {
+    "id": "marc",
+    "name": "Marc",
+    "simcompanion": true,
+    "simcompanionProduct": "Marc"
+  },
+  {
+    "id": "digimat",
+    "name": "Digimat",
+    "simcompanion": true,
+    "simcompanionProduct": "Digimat"
+  },
+  {
+    "id": "cradle-cfd",
+    "name": "Cradle CFD",
+    "simcompanion": true,
+    "simcompanionProduct": "Cradle CFD"
+  },
+  {
+    "id": "msc-apex",
+    "name": "MSC Apex",
+    "simcompanion": true,
+    "simcompanionProduct": "MSC Apex"
+  },
+  {
+    "id": "msc-apex-generative-design",
+    "name": "MSC Apex Generative Design",
+    "simcompanion": true,
+    "simcompanionProduct": "MSC Apex Generative Design"
+  },
+  {
+    "id": "caefatigue",
+    "name": "CAEfatigue",
+    "simcompanion": true,
+    "simcompanionProduct": "CAEfatigue"
+  },
+  {
+    "id": "dytran",
+    "name": "Dytran",
+    "simcompanion": true,
+    "simcompanionProduct": "Dytran"
+  },
+  {
+    "id": "forming",
+    "name": "Forming",
+    "simcompanion": true,
+    "simcompanionProduct": "Forming"
+  },
+  {
+    "id": "easy5",
+    "name": "Easy5",
+    "simcompanion": true,
+    "simcompanionProduct": "Easy5"
+  },
+  {
+    "id": "materialcenter",
+    "name": "MaterialCenter",
+    "simcompanion": true,
+    "simcompanionProduct": "MaterialCenter"
+  },
+  {
+    "id": "assembly-planner",
+    "name": "Assembly Planner",
+    "simcompanion": true,
+    "simcompanionProduct": "Assembly Planner"
+  },
+  {
+    "id": "flightloads",
+    "name": "Flightloads",
+    "simcompanion": true,
+    "simcompanionProduct": "Flightloads"
+  },
+  {
+    "id": "patran",
+    "name": "Patran",
+    "simcompanion": true,
+    "simcompanionProduct": "Patran"
   }
 ]
